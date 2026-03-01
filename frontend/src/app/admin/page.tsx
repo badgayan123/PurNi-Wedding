@@ -9,7 +9,9 @@ import {
   Upload,
   CheckCircle,
   Clock,
+  ImageIcon,
 } from "lucide-react";
+import ImageResizer, { getAspectRatio } from "@/components/ImageResizer";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -17,7 +19,7 @@ export default function AdminDashboard() {
   const [rsvps, setRsvps] = useState<any[]>([]);
   const [guests, setGuests] = useState<any[]>([]);
   const [inviteStatus, setInviteStatus] = useState({ total: 0, sent: 0, reminders: 0 });
-  const [activeTab, setActiveTab] = useState<"rsvp" | "guests" | "invites">("rsvp");
+  const [activeTab, setActiveTab] = useState<"rsvp" | "guests" | "invites" | "photos">("rsvp");
   const [uploadFile, setUploadFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [newGuest, setNewGuest] = useState({ name: "", familyName: "", whatsappNumber: "", relation: "" });
@@ -118,6 +120,24 @@ export default function AdminDashboard() {
     }
   };
 
+  const handlePhotoUpload = async (slot: string, file: File) => {
+    setLoading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("slot", slot);
+      const res = await fetch("/api/upload", { method: "POST", body: form });
+      if (res.ok) {
+        alert("Photo uploaded successfully!");
+      } else {
+        const err = await res.json();
+        alert(err.error || "Upload failed");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleReminder = async (guest: any) => {
     setLoading(true);
     try {
@@ -140,8 +160,8 @@ export default function AdminDashboard() {
       <div className="max-w-5xl mx-auto">
         <h1 className="text-3xl font-serif font-medium text-charcoal mb-8">Admin Dashboard</h1>
 
-        <div className="flex gap-2 mb-8 border-b border-gold/30 pb-4">
-          {(["rsvp", "guests", "invites"] as const).map((tab) => (
+        <div className="flex gap-2 mb-8 border-b border-gold/30 pb-4 flex-wrap">
+          {(["rsvp", "guests", "invites", "photos"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -333,7 +353,142 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
+
+        {activeTab === "photos" && (
+          <div className="space-y-8">
+            <h2 className="text-xl font-medium text-charcoal flex items-center gap-2">
+              <ImageIcon className="w-5 h-5" />
+              Upload Photos
+            </h2>
+            <p className="text-warm-brown text-sm">Select a photo → crop to the right shape → Upload. Or download the cropped image first.</p>
+
+            <div className="bg-cream rounded-xl border border-gold/20 p-6">
+              <h3 className="text-gold font-medium mb-4">Our Story · Engagement</h3>
+              <PhotoUploadSlot slot="engagement" label="Engagement photo" onUpload={handlePhotoUpload} loading={loading} />
+            </div>
+
+            <div className="bg-cream rounded-xl border border-gold/20 p-6">
+              <h3 className="text-gold font-medium mb-4">Events (carousel photos)</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {["haldi", "mehendi", "sangeet", "wedding", "reception"].map((event) => (
+                  <div key={event} className="space-y-2">
+                    <p className="text-warm-brown capitalize font-medium">{event}</p>
+                    <div className="flex gap-2 flex-wrap">
+                      {[1, 2, 3].map((i) => (
+                        <PhotoUploadSlot
+                          key={`${event}-${i}`}
+                          slot={`${event}-${i}`}
+                          label={`Photo ${i}`}
+                          onUpload={handlePhotoUpload}
+                          loading={loading}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-cream rounded-xl border border-gold/20 p-6">
+              <h3 className="text-gold font-medium mb-4">Family (carousel photos)</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <p className="text-warm-brown font-medium mb-2">Bride&apos;s Family</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <PhotoUploadSlot
+                        key={`bride-${i}`}
+                        slot={`bride-family-${i}`}
+                        label={`${i}`}
+                        onUpload={handlePhotoUpload}
+                        loading={loading}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-warm-brown font-medium mb-2">Groom&apos;s Family</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <PhotoUploadSlot
+                        key={`groom-${i}`}
+                        slot={`groom-family-${i}`}
+                        label={`${i}`}
+                        onUpload={handlePhotoUpload}
+                        loading={loading}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-cream rounded-xl border border-gold/20 p-6">
+              <h3 className="text-gold font-medium mb-4">Gallery (up to 20 photos)</h3>
+              <div className="flex gap-2 flex-wrap">
+                {Array.from({ length: 20 }, (_, i) => i + 1).map((i) => (
+                  <PhotoUploadSlot
+                    key={`gallery-${i}`}
+                    slot={`gallery-${i}`}
+                    label={`${i}`}
+                    onUpload={handlePhotoUpload}
+                    loading={loading}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+    </div>
+  );
+}
+
+function PhotoUploadSlot({
+  slot,
+  label,
+  onUpload,
+  loading,
+}: {
+  slot: string;
+  label: string;
+  onUpload: (slot: string, file: File) => Promise<void>;
+  loading: boolean;
+}) {
+  const [file, setFile] = useState<File | null>(null);
+  const [inputKey, setInputKey] = useState(0);
+  const ratio = getAspectRatio(slot);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) setFile(f);
+  };
+  const handleClose = () => {
+    setFile(null);
+    setInputKey((k) => k + 1);
+  };
+  return (
+    <div className="flex flex-col gap-1 min-w-[140px]">
+      <div className="flex items-center gap-2">
+        <input
+          key={inputKey}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="text-xs max-w-[110px] file:mr-1 file:py-1 file:px-2 file:rounded file:border-0 file:bg-gold/20 file:text-gold file:text-xs"
+        />
+      </div>
+      {ratio.label && (
+        <span className="text-[10px] text-warm-brown/70">{ratio.label}</span>
+      )}
+      {file && (
+        <ImageResizer
+          file={file}
+          slot={slot}
+          onClose={handleClose}
+          onUpload={onUpload}
+          loading={loading}
+        />
+      )}
     </div>
   );
 }

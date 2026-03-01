@@ -1,37 +1,99 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
+// Images uploaded via Admin → Photos
 const brideFamily = [
-  { name: "Father", role: "Father of the Bride", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=500" },
-  { name: "Mother", role: "Mother of the Bride", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=500" },
-  { name: "Sister", role: "Sister", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500" },
+  { name: "Father", role: "Father of the Bride", image: "/images/bride-family-1.png" },
+  { name: "Mother", role: "Mother of the Bride", image: "/images/bride-family-2.png" },
+  { name: "Sister", role: "Sister", image: "/images/bride-family-3.png" },
+  { name: "Brother", role: "Brother", image: "/images/bride-family-4.png" },
+  { name: "Grandmother", role: "Grandmother", image: "/images/bride-family-5.png" },
 ];
 
 const groomFamily = [
-  { name: "Father", role: "Father of the Groom", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=500" },
-  { name: "Mother", role: "Mother of the Groom", image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=500" },
-  { name: "Brother", role: "Brother", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500" },
+  { name: "Father", role: "Father of the Groom", image: "/images/groom-family-1.png" },
+  { name: "Mother", role: "Mother of the Groom", image: "/images/groom-family-2.png" },
+  { name: "Brother", role: "Brother", image: "/images/groom-family-3.png" },
+  { name: "Sister", role: "Sister", image: "/images/groom-family-4.png" },
+  { name: "Grandfather", role: "Grandfather", image: "/images/groom-family-5.png" },
 ];
 
-function FamilyCard({ person }: { person: { name: string; role: string; image: string } }) {
+function FamilyCarousel({
+  members,
+  title,
+}: {
+  members: { name: string; role: string; image: string }[];
+  title: string;
+}) {
+  const [current, setCurrent] = useState(0);
+  const len = members.length;
+
   return (
     <motion.div
-      className="group relative overflow-hidden rounded-xl bg-cream-warm border border-gold/20"
+      className="relative"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.4 }}
     >
-      <div
-        className="aspect-[3/4] bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
-        style={{ backgroundImage: `url('${person.image}')` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
-        <h4 className="text-xl font-medium">{person.name}</h4>
-        <p className="text-gold-light/90 text-sm mt-1">{person.role}</p>
+      <h3 className="text-center text-gold font-medium text-lg tracking-widest mb-6">{title}</h3>
+      <div className="relative max-w-md mx-auto">
+        <div className="aspect-[3/4] rounded-xl overflow-hidden bg-cream-warm border border-gold/20 shadow-lg">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              className="relative w-full h-full group"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                style={{ backgroundImage: `url('${members[current].image}')` }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/85 via-charcoal/20 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
+                <h4 className="text-xl font-medium">{members[current].name}</h4>
+                <p className="text-gold-light/90 text-sm mt-1">{members[current].role}</p>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {len > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => setCurrent((c) => (c - 1 + len) % len)}
+              className="absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold/90 hover:bg-gold text-cream flex items-center justify-center transition-colors shadow-lg"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrent((c) => (c + 1) % len)}
+              className="absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-gold/90 hover:bg-gold text-cream flex items-center justify-center transition-colors shadow-lg"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              {members.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setCurrent(i)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all ${i === current ? "bg-gold scale-110" : "bg-white/60 hover:bg-white/80"}`}
+                  aria-label={`Slide ${i + 1}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </motion.div>
   );
@@ -52,24 +114,9 @@ export default function Family() {
         </h2>
       </motion.div>
 
-      <div className="max-w-6xl mx-auto space-y-20">
-        <div>
-          <h3 className="text-center text-gold font-medium text-lg tracking-widest mb-10">Bride&apos;s Family</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            {brideFamily.map((person) => (
-              <FamilyCard key={person.name + person.role} person={person} />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="text-center text-gold font-medium text-lg tracking-widest mb-10">Groom&apos;s Family</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-            {groomFamily.map((person) => (
-              <FamilyCard key={person.name + person.role} person={person} />
-            ))}
-          </div>
-        </div>
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-8 lg:gap-12">
+        <FamilyCarousel members={brideFamily} title="Bride's Family" />
+        <FamilyCarousel members={groomFamily} title="Groom's Family" />
       </div>
     </section>
   );

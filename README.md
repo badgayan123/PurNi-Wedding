@@ -69,7 +69,7 @@ Rajesh | Sharma | 9876543210 | Mama ji
 
 ## Customisation
 
-- **Couple names**: Edit `Hero.tsx` (Priya & Raj)
+- **Couple names**: Edit `frontend/src/lib/wedding-config.ts` (Nitesh & Purnima / PurNi)
 - **Wedding date**: Edit `Hero.tsx` WEDDING_DATE
 - **Events**: Edit `Events.tsx` events array
 - **Gallery**: Replace URLs in `Gallery.tsx` with your photos

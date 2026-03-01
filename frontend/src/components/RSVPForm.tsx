@@ -64,7 +64,7 @@ export default function RSVPForm() {
             We&apos;ve received your RSVP and can&apos;t wait to celebrate with you.
           </p>
           <p className="font-handwritten text-2xl text-gold mt-8">
-            &quot;You are mine · I am yours · We are forever&quot;
+            &quot;You are mine · I am yours · We are forever · PurNi&quot;
           </p>
         </div>
       </motion.div>

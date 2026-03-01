@@ -29,7 +29,7 @@ export default function InviteCard() {
           </h1>
           <p className="text-gold text-sm tracking-widest uppercase mt-4">You&apos;re Invited</p>
           <p className="font-handwritten text-xl sm:text-2xl text-gold mt-8">
-            &quot;You are mine<br />I am yours<br />We are forever&quot;
+            &quot;You are mine<br />I am yours<br />We are forever<br />PurNi&quot;
           </p>
           <a
             href="/#rsvp"

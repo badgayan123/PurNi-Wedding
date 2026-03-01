@@ -67,10 +67,10 @@ export default function Hero() {
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
         <p className="text-gold-light/90 text-sm sm:text-base tracking-[0.4em] uppercase mb-2">
-          We&apos;re getting married
+          PurNi · We&apos;re getting married
         </p>
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-cream tracking-tight">
-          {WEDDING_CONFIG.coupleNames.bride} & {WEDDING_CONFIG.coupleNames.groom}
+          {WEDDING_CONFIG.coupleNames.groom} & {WEDDING_CONFIG.coupleNames.bride}
         </h1>
         <p className="text-cream/90 text-lg sm:text-xl mt-4 font-light">
           June 15, 2026
@@ -84,7 +84,8 @@ export default function Hero() {
         >
           &quot;You are mine<br />
           I am yours<br />
-          We are forever&quot;
+          We are forever<br />
+          PurNi&quot;
         </motion.p>
       </motion.div>
 

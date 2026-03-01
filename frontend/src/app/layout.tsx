@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Our Wedding | Forever Together",
-  description: "Join us as we begin our forever. A celebration of love.",
+  title: "PurNi | Nitesh & Purnima's Wedding",
+  description: "Join us as we begin our forever. Nitesh & Purnima — PurNi.",
 };
 
 export default function RootLayout({

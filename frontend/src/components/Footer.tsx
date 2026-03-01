@@ -12,11 +12,12 @@ export default function Footer() {
         viewport={{ once: true }}
       >
         <p className="font-handwritten text-2xl text-gold-light mb-4">
-          &quot;You are mine · I am yours · We are forever&quot;
+          &quot;You are mine · I am yours · We are forever · PurNi&quot;
         </p>
         <p className="text-cream/70 text-sm">
-          With love, Priya & Raj
+          With love, PurNi
         </p>
+        <p className="text-cream/50 text-xs mt-1">Nitesh & Purnima</p>
         <a
           href="/admin"
           className="inline-block mt-6 text-cream/50 hover:text-gold-light text-xs"

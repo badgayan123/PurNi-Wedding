@@ -19,7 +19,7 @@ const timeline = [
     year: "2024",
     title: "Engagement",
     desc: "Surrounded by family and love, we celebrated the first step toward forever.",
-    image: "https://images.unsplash.com/photo-1525268323446-0505b6fe7778?q=80&w=2070",
+    image: "/images/engagement.png",
   },
   {
     year: "2025",
@@ -46,7 +46,7 @@ export default function OurStory() {
             <span className="text-warm-brown">Ours became forever</span>
           </h2>
           <p className="font-handwritten text-2xl sm:text-3xl text-gold mt-8">
-            &quot;You are mine · I am yours · We are forever&quot;
+            &quot;You are mine · I am yours · We are forever · PurNi&quot;
           </p>
         </motion.div>
 
@@ -81,7 +81,7 @@ export default function OurStory() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          &quot;You are mine · I am yours · We are forever&quot;
+          &quot;You are mine · I am yours · We are forever · PurNi&quot;
         </motion.p>
       </div>
     </section>

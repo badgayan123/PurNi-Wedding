@@ -3,18 +3,12 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-const gallery = [
-  { url: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800", caption: "Ring Exchange" },
-  { url: "https://images.unsplash.com/photo-1511285560929-80b456fea0e9?q=80&w=800", caption: "Portrait" },
-  { url: "https://images.unsplash.com/photo-1529634810-b333c7ea4308?q=80&w=800", caption: "Candid" },
-  { url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800", caption: "Family Blessing" },
-  { url: "https://images.unsplash.com/photo-1525268323446-0505b6fe7778?q=80&w=800", caption: "Engagement" },
-  { url: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800", caption: "Together" },
-  { url: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=800", caption: "Joy" },
-  { url: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?q=80&w=800", caption: "Moment" },
-  { url: "https://images.unsplash.com/photo-1529634810-b333c7ea4308?q=80&w=800", caption: "Celebration" },
-  { url: "https://images.unsplash.com/photo-1478146896981-b80eb4564a2e?q=80&w=800", caption: "Forever" },
-];
+// Images uploaded via Admin → Photos (up to 20)
+const GALLERY_CAPTIONS = ["Ring Exchange", "Portrait", "Candid", "Family Blessing", "Engagement", "Together", "Joy", "Moment", "Celebration", "Forever", "Love", "Smile", "Blessing", "Ceremony", "Dance", "Tradition", "Promise", "Together", "Happiness", "PurNi"];
+const gallery = Array.from({ length: 20 }, (_, i) => ({
+  url: `/images/gallery-${i + 1}.png`,
+  caption: GALLERY_CAPTIONS[i] || `Photo ${i + 1}`,
+}));
 
 function GalleryImage({ item, index }: { item: { url: string; caption: string }; index: number }) {
   const [hovered, setHovered] = useState(false);

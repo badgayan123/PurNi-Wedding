@@ -29,7 +29,7 @@ router.post("/generate-card", async (req, res) => {
 <body>
   <div class="card">
     <h1>Welcome ${familyName} Family</h1>
-    <p class="signature">"You are mine<br>I am yours<br>We are forever"</p>
+    <p class="signature">"You are mine<br>I am yours<br>We are forever<br>PurNi"</p>
   </div>
 </body>
 </html>`;
