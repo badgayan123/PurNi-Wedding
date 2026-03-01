@@ -63,9 +63,12 @@ Rajesh | Sharma | 9876543210 | Mama ji
 
 ## Deployment
 
-- **Frontend**: Vercel (`vercel deploy`)
+### GitHub Pages
+Live at **https://badgayan123.github.io/PurNi-Wedding/** – push to `master` and the workflow deploys automatically. In repo **Settings → Pages**, set **Source** to **GitHub Actions**.
+
+### Vercel (full features including admin upload)
+- **Frontend**: [vercel.com/new](https://vercel.com/new) → Import repo, Root Directory: `frontend`
 - **Backend**: Render / Railway – set env vars and `MONGODB_URI`
-- Update `NEXT_PUBLIC_API_URL` and `FRONTEND_URL` for production
 
 ## Customisation
 
