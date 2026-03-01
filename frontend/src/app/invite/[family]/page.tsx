@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function InviteCard() {
   const params = useParams();
@@ -31,12 +32,12 @@ export default function InviteCard() {
           <p className="font-handwritten text-xl sm:text-2xl text-gold mt-8">
             &quot;You are mine<br />I am yours<br />We are forever<br />PurNi&quot;
           </p>
-          <a
+          <Link
             href="/#rsvp"
             className="inline-block mt-10 px-8 py-3 bg-gold text-cream rounded-lg font-medium hover:bg-gold-soft transition-colors"
           >
             RSVP Now
-          </a>
+          </Link>
         </div>
       </div>
     </div>
